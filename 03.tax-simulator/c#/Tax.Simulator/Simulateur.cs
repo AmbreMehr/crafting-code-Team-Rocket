@@ -16,30 +16,10 @@ public static class Simulateur
         VerifierParametres(situationFamiliale, salaireMensuel, salaireMensuelConjoint, nombreEnfants);
         decimal revenuAnnuel = CalculerRevenuAnnuel(situationFamiliale, salaireMensuel, salaireMensuelConjoint);
         decimal partsFiscales = CalculerPartsFiscales(situationFamiliale, nombreEnfants);
-        decimal revenuImposableParPart = revenuAnnuel / partsFiscales;
-
-        decimal impot = 0;
-        for (var i = 0; i < TranchesImposition.Length; i++)
-        {
-            if (revenuImposableParPart <= TranchesImposition[i])
-            {
-                impot += (revenuImposableParPart - (i > 0 ? TranchesImposition[i - 1] : 0)) * TauxImposition[i];
-                break;
-            }
-            else
-            {
-                impot += (TranchesImposition[i] - (i > 0 ? TranchesImposition[i - 1] : 0)) * TauxImposition[i];
-            }
-        }
-
-        if (revenuImposableParPart > TranchesImposition[^1])
-        {
-            impot += (revenuImposableParPart - TranchesImposition[^1]) * TauxImposition[^1];
-        }
-
-        var impotParPart = impot;
-
-        return Math.Round(impotParPart * partsFiscales, 2);
+        decimal revenuImposableParTranche = revenuAnnuel / partsFiscales;
+        decimal impotsParTranche = CalculerImpotsParTranche(revenuImposableParTranche);
+        decimal impotsReel = Math.Round(impotsParTranche * partsFiscales, 2);
+        return impotsReel;
     }
 
     /// <summary>
@@ -127,5 +107,34 @@ public static class Simulateur
 
         decimal partsFiscales = baseQuotient + quotientEnfants;
         return partsFiscales;
+    }
+
+    /// <summary>
+    /// Calculate the tax per slice
+    /// </summary>
+    /// <param name="revenuImposableParTranche">taxable income per slice</param>
+    /// <returns>tax per slice</returns>
+    private static decimal CalculerImpotsParTranche(decimal revenuImposableParTranche)
+    {
+        decimal impots = 0;
+        for (int i = 0; i < TranchesImposition.Length; i++)
+        {
+            if (revenuImposableParTranche <= TranchesImposition[i])
+            {
+                impots += (revenuImposableParTranche - (i > 0 ? TranchesImposition[i - 1] : 0)) * TauxImposition[i];
+                break;
+            }
+            else
+            {
+                impots += (TranchesImposition[i] - (i > 0 ? TranchesImposition[i - 1] : 0)) * TauxImposition[i];
+            }
+        }
+
+        if (revenuImposableParTranche > TranchesImposition[^1])
+        {
+            impots += (revenuImposableParTranche - TranchesImposition[^1]) * TauxImposition[^1];
+        }
+
+        return impots;
     }
 }
