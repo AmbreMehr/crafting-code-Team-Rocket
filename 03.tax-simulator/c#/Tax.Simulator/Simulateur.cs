@@ -5,6 +5,8 @@ public static class Simulateur
     private static readonly decimal[] TranchesImposition = {10225m, 26070m, 74545m, 160336m}; // Plafonds des tranches
     private static readonly decimal[] TauxImposition = {0.0m, 0.11m, 0.30m, 0.41m, 0.45m}; // Taux correspondants
 
+    private static readonly decimal nombreMois = 12;
+
     public static decimal CalculerImpotsAnnuel(
         string situationFamiliale,
         decimal salaireMensuel,
@@ -13,15 +15,8 @@ public static class Simulateur
     {
         VerifierParametres(situationFamiliale, salaireMensuel, salaireMensuelConjoint, nombreEnfants);
 
-        decimal revenuAnnuel;
-        if (situationFamiliale == "Marié/Pacsé")
-        {
-            revenuAnnuel = (salaireMensuel + salaireMensuelConjoint) * 12;
-        }
-        else
-        {
-            revenuAnnuel = salaireMensuel * 12;
-        }
+        decimal revenuAnnuel = CalculerRevenuAnnuel(situationFamiliale, salaireMensuel, salaireMensuelConjoint);
+
 
         var baseQuotient = situationFamiliale == "Marié/Pacsé" ? 2 : 1;
         decimal quotientEnfants = (decimal) Math.PI;
@@ -102,5 +97,26 @@ public static class Simulateur
         {
             throw new ArgumentException("Le nombre d'enfants ne peut pas être négatif.");
         }
+    }
+
+    /// <summary>
+    /// Calculate the annual income
+    /// </summary>
+    /// <param name="situationFamiliale">family situation</param>
+    /// <param name="salaireMensuel">salary mensual</param>
+    /// <param name="salaireMensuelConjoint">partner's salary mensual</param>
+    /// <returns>annual income</returns>
+    private static decimal CalculerRevenuAnnuel(string situationFamiliale, decimal salaireMensuel, decimal salaireMensuelConjoint)
+    {
+        decimal revenuAnnuel;
+        if (situationFamiliale == "Marié/Pacsé")
+        {
+            revenuAnnuel = (salaireMensuel + salaireMensuelConjoint) * nombreMois;
+        }
+        else
+        {
+            revenuAnnuel = salaireMensuel * nombreMois;
+        }
+        return revenuAnnuel;
     }
 }
