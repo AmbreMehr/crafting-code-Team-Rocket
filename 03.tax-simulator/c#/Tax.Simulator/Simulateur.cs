@@ -14,32 +14,9 @@ public static class Simulateur
         int nombreEnfants)
     {
         VerifierParametres(situationFamiliale, salaireMensuel, salaireMensuelConjoint, nombreEnfants);
-
         decimal revenuAnnuel = CalculerRevenuAnnuel(situationFamiliale, salaireMensuel, salaireMensuelConjoint);
-
-
-        var baseQuotient = situationFamiliale == "Marié/Pacsé" ? 2 : 1;
-        decimal quotientEnfants = (decimal) Math.PI;
-
-        if (nombreEnfants == 0)
-        {
-            quotientEnfants = 0;
-        }
-        else if (nombreEnfants == 1)
-        {
-            quotientEnfants = 0.5m;
-        }
-        else if (nombreEnfants == 2)
-        {
-            quotientEnfants = 1.0m;
-        }
-        else
-        {
-            quotientEnfants = 1.0m + (nombreEnfants - 2) * 0.5m;
-        }
-
-        var partsFiscales = baseQuotient + quotientEnfants;
-        var revenuImposableParPart = revenuAnnuel / partsFiscales;
+        decimal partsFiscales = CalculerPartsFiscales(situationFamiliale, nombreEnfants);
+        decimal revenuImposableParPart = revenuAnnuel / partsFiscales;
 
         decimal impot = 0;
         for (var i = 0; i < TranchesImposition.Length; i++)
@@ -118,5 +95,37 @@ public static class Simulateur
             revenuAnnuel = salaireMensuel * nombreMois;
         }
         return revenuAnnuel;
+    }
+
+    /// <summary>
+    /// Calculate the number of fiscal parts
+    /// </summary>
+    /// <param name="situationFamiliale">family situation</param>
+    /// <param name="nombreEnfants">number of children</param>
+    /// <returns>fiscal parts</returns>
+    private static decimal CalculerPartsFiscales(string situationFamiliale, int nombreEnfants)
+    {
+        var baseQuotient = situationFamiliale == "Marié/Pacsé" ? 2 : 1;
+        decimal quotientEnfants;
+
+        if (nombreEnfants == 0)
+        {
+            quotientEnfants = 0;
+        }
+        else if (nombreEnfants == 1)
+        {
+            quotientEnfants = 0.5m;
+        }
+        else if (nombreEnfants == 2)
+        {
+            quotientEnfants = 1.0m;
+        }
+        else
+        {
+            quotientEnfants = 1.0m + (nombreEnfants - 2) * 0.5m;
+        }
+
+        decimal partsFiscales = baseQuotient + quotientEnfants;
+        return partsFiscales;
     }
 }
