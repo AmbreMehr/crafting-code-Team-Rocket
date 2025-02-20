@@ -23,7 +23,7 @@ public static class Simulateur
 
         if (situationFamiliale == "Marié/Pacsé" && salaireMensuelConjoint < 0)
         {
-            throw new InvalidDataException("Les salaires doivent être positifs.");
+            throw new ArgumentException("Les salaires doivent être positifs.");
         }
 
         if (nombreEnfants < 0)
