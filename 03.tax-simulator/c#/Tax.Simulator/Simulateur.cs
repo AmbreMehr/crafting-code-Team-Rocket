@@ -5,9 +5,10 @@ namespace Tax.Simulator;
 /// </summary>
 public static class Simulateur
 {
-    private static readonly decimal[] TranchesImposition = {10225m, 26070m, 74545m, 160336m}; // Slices ceiling
-    private static readonly decimal[] TauxImposition = {0.0m, 0.11m, 0.30m, 0.41m, 0.45m}; // Corresponding rate
-    private static readonly decimal nombreMois = 12;
+    private static readonly decimal[] tranchesImposition = {10225m, 26070m, 74545m, 160336m}; // Slices ceiling
+    private static readonly decimal[] tauxImposition = {0.0m, 0.11m, 0.30m, 0.41m, 0.45m}; // Corresponding rate
+    private static readonly string[] situationsFamiliales = { "Célibataire", "Marié/Pacsé" }; // Family situations
+    private static readonly decimal nombreMois = 12; // Number of months in a year (to handle 13th month if needed)
 
     /// <summary>
     /// Calculate the annual tax
@@ -45,7 +46,7 @@ public static class Simulateur
         decimal salaireMensuelConjoint,
         int nombreEnfants)
     {
-        if (situationFamiliale != "Célibataire" && situationFamiliale != "Marié/Pacsé")
+        if (!situationsFamiliales.Contains(situationFamiliale))
         {
             throw new ArgumentException("Situation familiale invalide.");
         }
@@ -55,7 +56,7 @@ public static class Simulateur
             throw new ArgumentException("Les salaires doivent être positifs.");
         }
 
-        if (situationFamiliale == "Marié/Pacsé" && salaireMensuelConjoint < 0)
+        if (situationFamiliale == situationsFamiliales[1] && salaireMensuelConjoint < 0)
         {
             throw new ArgumentException("Les salaires doivent être positifs.");
         }
@@ -76,7 +77,7 @@ public static class Simulateur
     private static decimal CalculerRevenuAnnuel(string situationFamiliale, decimal salaireMensuel, decimal salaireMensuelConjoint)
     {
         decimal revenuAnnuel;
-        if (situationFamiliale == "Marié/Pacsé")
+        if (situationFamiliale == situationsFamiliales[1])
         {
             revenuAnnuel = (salaireMensuel + salaireMensuelConjoint) * nombreMois;
         }
@@ -95,7 +96,7 @@ public static class Simulateur
     /// <returns>fiscal parts</returns>
     private static decimal CalculerPartsFiscales(string situationFamiliale, int nombreEnfants)
     {
-        var baseQuotient = situationFamiliale == "Marié/Pacsé" ? 2 : 1;
+        var baseQuotient = situationFamiliale == situationsFamiliales[1] ? 2 : 1;
         decimal quotientEnfants;
 
         if (nombreEnfants == 0)
@@ -127,22 +128,22 @@ public static class Simulateur
     private static decimal CalculerImpotsParTranche(decimal revenuImposableParTranche)
     {
         decimal impots = 0;
-        for (int i = 0; i < TranchesImposition.Length; i++)
+        for (int i = 0; i < tranchesImposition.Length; i++)
         {
-            if (revenuImposableParTranche <= TranchesImposition[i])
+            if (revenuImposableParTranche <= tranchesImposition[i])
             {
-                impots += (revenuImposableParTranche - (i > 0 ? TranchesImposition[i - 1] : 0)) * TauxImposition[i];
+                impots += (revenuImposableParTranche - (i > 0 ? tranchesImposition[i - 1] : 0)) * tauxImposition[i];
                 break;
             }
             else
             {
-                impots += (TranchesImposition[i] - (i > 0 ? TranchesImposition[i - 1] : 0)) * TauxImposition[i];
+                impots += (tranchesImposition[i] - (i > 0 ? tranchesImposition[i - 1] : 0)) * tauxImposition[i];
             }
         }
 
-        if (revenuImposableParTranche > TranchesImposition[^1])
+        if (revenuImposableParTranche > tranchesImposition[^1])
         {
-            impots += (revenuImposableParTranche - TranchesImposition[^1]) * TauxImposition[^1];
+            impots += (revenuImposableParTranche - tranchesImposition[^1]) * tauxImposition[^1];
         }
 
         return impots;
