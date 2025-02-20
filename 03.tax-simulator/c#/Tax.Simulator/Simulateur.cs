@@ -1,12 +1,22 @@
 namespace Tax.Simulator;
 
+/// <summary>
+/// Simulator of taxes
+/// </summary>
 public static class Simulateur
 {
-    private static readonly decimal[] TranchesImposition = {10225m, 26070m, 74545m, 160336m}; // Plafonds des tranches
-    private static readonly decimal[] TauxImposition = {0.0m, 0.11m, 0.30m, 0.41m, 0.45m}; // Taux correspondants
-
+    private static readonly decimal[] TranchesImposition = {10225m, 26070m, 74545m, 160336m}; // Slices ceiling
+    private static readonly decimal[] TauxImposition = {0.0m, 0.11m, 0.30m, 0.41m, 0.45m}; // Corresponding rate
     private static readonly decimal nombreMois = 12;
 
+    /// <summary>
+    /// Calculate the annual tax
+    /// </summary>
+    /// <param name="situationFamiliale">family situation</param>
+    /// <param name="salaireMensuel">mensual salary</param>
+    /// <param name="salaireMensuelConjoint">partner's mensual salary</param>
+    /// <param name="nombreEnfants">number of children</param>
+    /// <returns></returns>
     public static decimal CalculerImpotsAnnuel(
         string situationFamiliale,
         decimal salaireMensuel,
@@ -26,8 +36,8 @@ public static class Simulateur
     /// Check the parameters and throws exceptions if they are invalid
     /// </summary>
     /// <param name="situationFamiliale">family situation</param>
-    /// <param name="salaireMensuel">salary mensual</param>
-    /// <param name="salaireMensuelConjoint">partner's salary mensual</param>
+    /// <param name="salaireMensuel">mensual salary</param>
+    /// <param name="salaireMensuelConjoint">partner's mensual salary</param>
     /// <param name="nombreEnfants">number of children</param>
     private static void VerifierParametres(
         string situationFamiliale,
@@ -60,8 +70,8 @@ public static class Simulateur
     /// Calculate the annual income
     /// </summary>
     /// <param name="situationFamiliale">family situation</param>
-    /// <param name="salaireMensuel">salary mensual</param>
-    /// <param name="salaireMensuelConjoint">partner's salary mensual</param>
+    /// <param name="salaireMensuel">mensual salary</param>
+    /// <param name="salaireMensuelConjoint">partner's mensual salary</param>
     /// <returns>annual income</returns>
     private static decimal CalculerRevenuAnnuel(string situationFamiliale, decimal salaireMensuel, decimal salaireMensuelConjoint)
     {
