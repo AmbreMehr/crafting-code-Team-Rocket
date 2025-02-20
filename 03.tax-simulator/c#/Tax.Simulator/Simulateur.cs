@@ -11,25 +11,7 @@ public static class Simulateur
         decimal salaireMensuelConjoint,
         int nombreEnfants)
     {
-        if (situationFamiliale != "Célibataire" && situationFamiliale != "Marié/Pacsé")
-        {
-            throw new ArgumentException("Situation familiale invalide.");
-        }
-
-        if (salaireMensuel <= 0)
-        {
-            throw new ArgumentException("Les salaires doivent être positifs.");
-        }
-
-        if (situationFamiliale == "Marié/Pacsé" && salaireMensuelConjoint < 0)
-        {
-            throw new ArgumentException("Les salaires doivent être positifs.");
-        }
-
-        if (nombreEnfants < 0)
-        {
-            throw new ArgumentException("Le nombre d'enfants ne peut pas être négatif.");
-        }
+        VerifierParametres(situationFamiliale, salaireMensuel, salaireMensuelConjoint, nombreEnfants);
 
         decimal revenuAnnuel;
         if (situationFamiliale == "Marié/Pacsé")
@@ -86,5 +68,39 @@ public static class Simulateur
         var impotParPart = impot;
 
         return Math.Round(impotParPart * partsFiscales, 2);
+    }
+
+    /// <summary>
+    /// Check the parameters and throws exceptions if they are invalid
+    /// </summary>
+    /// <param name="situationFamiliale">family situation</param>
+    /// <param name="salaireMensuel">salary mensual</param>
+    /// <param name="salaireMensuelConjoint">partner's salary mensual</param>
+    /// <param name="nombreEnfants">number of children</param>
+    private static void VerifierParametres(
+        string situationFamiliale,
+        decimal salaireMensuel,
+        decimal salaireMensuelConjoint,
+        int nombreEnfants)
+    {
+        if (situationFamiliale != "Célibataire" && situationFamiliale != "Marié/Pacsé")
+        {
+            throw new ArgumentException("Situation familiale invalide.");
+        }
+
+        if (salaireMensuel <= 0)
+        {
+            throw new ArgumentException("Les salaires doivent être positifs.");
+        }
+
+        if (situationFamiliale == "Marié/Pacsé" && salaireMensuelConjoint < 0)
+        {
+            throw new ArgumentException("Les salaires doivent être positifs.");
+        }
+
+        if (nombreEnfants < 0)
+        {
+            throw new ArgumentException("Le nombre d'enfants ne peut pas être négatif.");
+        }
     }
 }
