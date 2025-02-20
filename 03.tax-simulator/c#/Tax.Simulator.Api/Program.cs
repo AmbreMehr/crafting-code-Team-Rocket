@@ -24,4 +24,5 @@ app.MapControllers();
 
 app.Run();
 
+// used for integration tests
 public partial class Program;
