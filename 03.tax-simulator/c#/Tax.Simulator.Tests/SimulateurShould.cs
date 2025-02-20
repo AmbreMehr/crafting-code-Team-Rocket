@@ -73,7 +73,7 @@ public class SimulateurShould
         int nombreEnfants = 0;
 
 
-        Assert.Throws<InvalidDataException>(() => Simulateur.CalculerImpotsAnnuel(situationFamiliale, salaireMensuel, salaireMensuelConjoint, nombreEnfants));
+        Assert.Throws<ArgumentException>(() => Simulateur.CalculerImpotsAnnuel(situationFamiliale, salaireMensuel, salaireMensuelConjoint, nombreEnfants));
     }
 
 
