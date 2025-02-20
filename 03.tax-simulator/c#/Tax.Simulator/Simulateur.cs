@@ -17,7 +17,7 @@ public static class Simulateur
     /// <param name="salaireMensuel">mensual salary</param>
     /// <param name="salaireMensuelConjoint">partner's mensual salary</param>
     /// <param name="nombreEnfants">number of children</param>
-    /// <returns></returns>
+    /// <returns>annual tax</returns>
     public static decimal CalculerImpotsAnnuel(
         string situationFamiliale,
         decimal salaireMensuel,
