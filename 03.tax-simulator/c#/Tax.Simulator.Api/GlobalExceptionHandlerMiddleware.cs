@@ -1,7 +1,14 @@
 namespace Tax.Simulator.Api;
 
+/// <summary>
+/// Class that handle exceptions globally
+/// </summary>
 public class GlobalExceptionHandlerMiddleware(RequestDelegate next, ILogger<GlobalExceptionHandlerMiddleware> logger)
 {
+    /// <summary>
+    /// Handle exceptions globally
+    /// </summary>
+    /// <param name="context">context of the request received</param>
     public async Task InvokeAsync(HttpContext context)
     {
         try
