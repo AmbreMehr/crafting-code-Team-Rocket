@@ -5,8 +5,8 @@ namespace Tax.Simulator;
 /// </summary>
 public static class Simulateur
 {
-    private static readonly decimal[] tranchesImposition = {10225m, 26070m, 74545m, 160336m}; // Slices ceiling
-    private static readonly decimal[] tauxImposition = {0.0m, 0.11m, 0.30m, 0.41m, 0.45m}; // Corresponding rate
+    private static readonly decimal[] tranchesImposition = {10225m, 26070m, 74545m, 160336m, 500000m}; // Slices ceiling
+    private static readonly decimal[] tauxImposition = {0.0m, 0.11m, 0.30m, 0.41m, 0.45m, 0.48m}; // Corresponding rate
     private static readonly string[] situationsFamiliales = { "Célibataire", "Marié/Pacsé" }; // Family situations
     private static readonly decimal nombreMois = 12; // Number of months in a year (to handle 13th month if needed)
 
