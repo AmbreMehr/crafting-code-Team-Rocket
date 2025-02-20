@@ -131,7 +131,55 @@ public class SimulateurShould
     #endregion
 
 
+    #region User story 5
+    /// <summary>
+    /// Check the calcul of tax for single person with salary less than ceiling (20 000€)
+    /// </summary>
+    [Fact]
+    public void CalculTaxSingleLessThanCeilingOK()
+    {
+        string situationFamiliale = "Célibataire";
+        decimal salaireMensuel = 20000;
+        decimal salaireMensuelConjoint = 0;
+        int nombreEnfants = 0;
+        decimal expectedResult = 87308.56m;
+        decimal result = Simulateur.CalculerImpotsAnnuel(situationFamiliale, salaireMensuel, salaireMensuelConjoint, nombreEnfants);
+        Assert.Equal(expectedResult, result);
+    }
 
+    /// <summary>
+    /// Check the calcul of tax for single person with salary more than ceiling (45 000€)
+    /// </summary>
+    [Fact]
+    public void CalculTaxSingleMoreThanCeilingOK()
+    {
+        string situationFamiliale = "Célibataire";
+        decimal salaireMensuel = 45000;
+        decimal salaireMensuelConjoint = 0;
+        int nombreEnfants = 0;
+        decimal expectedResult = 204308.56m + 19200;
+        decimal result = Simulateur.CalculerImpotsAnnuel(situationFamiliale, salaireMensuel, salaireMensuelConjoint, nombreEnfants);
+        Assert.Equal(expectedResult, result);
+    }
+
+    /// <summary>
+    /// Check the calcul of tax for married person with childrens and total salary more than ceiling (30 000€ + 25 000€)
+    /// </summary>
+    [Fact]
+    public void CalculTaxMarriedWithChildrensMoreThanCeilingOK()
+    {
+        string situationFamiliale = "Marié/Pacsé";
+        decimal salaireMensuel = 30000;
+        decimal salaireMensuelConjoint = 25000;
+        int nombreEnfants = 2;
+        decimal expectedResult = 234925.68m;
+        decimal result = Simulateur.CalculerImpotsAnnuel(situationFamiliale, salaireMensuel, salaireMensuelConjoint, nombreEnfants);
+        Assert.Equal(expectedResult, result);
+    }
+
+
+
+    #endregion
 
 
 }
