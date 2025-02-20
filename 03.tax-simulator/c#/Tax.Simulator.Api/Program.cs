@@ -1,12 +1,15 @@
-using Tax.Simulator;
-using Tax.Simulator.Api;
-
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -14,28 +17,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
-app.MapGet("/api/tax/calculate",
-        (string situationFamiliale, decimal salaireMensuel, decimal salaireMensuelConjoint, int nombreEnfants) =>
-        {
-            try
-            {
-                return Results.Ok(
-                    Simulateur.CalculerImpotsAnnuel(
-                        situationFamiliale,
-                        salaireMensuel,
-                        salaireMensuelConjoint,
-                        nombreEnfants)
-                );
-            }
-            catch (ArgumentException ex)
-            {
-                return Results.BadRequest(ex.Message);
-            }
-        })
-    .WithName("CalculateTax");
+app.UseAuthorization();
 
-await app.RunAsync();
+app.MapControllers();
+
+app.Run();
 
 public partial class Program;
