@@ -6,6 +6,7 @@ namespace Tax.Simulator.Api
     /// <summary>
     /// Controller for the simulator
     /// </summary>
+    [Route("api/tax")]
     [ApiController]
     public class SimulateurControleur : ControllerBase
     {
@@ -18,7 +19,7 @@ namespace Tax.Simulator.Api
         /// <param name="nombreEnfants">number of childrens</param>
         /// <returns>taxes</returns> 
         [HttpGet]
-        [Route("api/tax/calculate")]
+        [Route("calculate")]
         [ProducesResponseType(typeof(decimal), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult CalculerImpots(
